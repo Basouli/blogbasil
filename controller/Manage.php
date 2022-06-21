@@ -24,7 +24,7 @@ class Manage {
 
   public function createArticle() {
     if ($_SESSION['user']->getDroits() == "42" || $_SESSION['user']->getDroits() == "1337") {
-        $this->getBasicView('Créer article', CONNECT, './view/element/CreateArticle.php', array(), $params);
+        $this->getBasicView('Créer article', CONNECT, './view/element/CreateArticle.php', array());
     } else {
       $this->redirectWithAlert('identification', 'Vous devez être connecté avec un compte moderateur ou administrateur pour accéder à cette page.');
     }
@@ -46,9 +46,9 @@ class Manage {
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  function getBasicView($action, $actionTitle, $contentToShow, $navButtons, $params) {
+  function getBasicView($action, $actionTitle, $contentToShow, $navButtons) {
 
-      $content = (substr($contentToShow, -4) == ".php") ? getContent($contentToShow, $params) : $contentToShow;
+      $content = (substr($contentToShow, -4) == ".php") ? getContent($contentToShow) : $contentToShow;
 
       startHTML(array("./script/utils/ajax.js", "./script/element/LangScript.js")); //"./script/element/ReloadScript.js"
 

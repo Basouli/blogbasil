@@ -15,28 +15,28 @@ class Home {
   }
 
   public function run($params) {
-    $this->getBasicView('identification', CONNECT, './view/HomeView.php', array());
+    $this->getBasicView('home', 'Accueil', './view/HomeView.php', array());
   }
 
-  public function move($params) {
-      if (isset($params['moveListId'])) {
-          $moveListId = (int)$params['moveListId'];
-          $l = $this->model->findListById($this->user->getId(), $moveListId);
-          $blocks = $this->model->findAllBlocksByListId($this->user->getId(), $l->getId());
-          if ($l->getBlockIndexes() != '' && $l->getBlockIndexes() != null) {
-              foreach ($blocks as $block) {
-                  $l->addBlock($block);
-              }
-          }
+  public function allArticles($params) {
+    $params['start'];
 
-          startHTML(array("./script/utils/ajax.js", "./script/MoveScript.js"));
-          $pageTitle = APPNAME . " - " . MOVE_BLOCK_TITLE;
-          require_once 'view/doc/DocumentStartBodyView.php';
-          require_once 'view/MoveView.php';
-      } else {
-          //addAlert();
-          $this->run($params);
-      }
+    $this->getBasicView('articles', 'Tous les Articles', './view/AllArticlesView.php', array());
+
+    startHTML(array());
+
+    $pageTitle = APPNAME . " - Tous les Articles";
+    require_once './view/doc/DocumentStartBodyView.php';
+    include_once('./view/element/AllArticlesView.php');
+  }
+
+  public function postCommentaire($params) {
+    if (!empty($params['commentaireSubmit']) && !empty($params['articleId'])) {
+      $this->model->insertCommentaire($params['commentaireSubmit'], $params['articleId'], $_SESSION['user']->getId());
+      $this->redirectWithAlert('run', 'Commentaire ajouté avec succès.');
+    } else {
+      $this->redirect('run');
+    }
   }
 
   public function manageAccount($params) {
@@ -74,6 +74,15 @@ class Home {
       $pageTitle = APPNAME . " - " . $actionTitle;
       require_once './view/doc/DocumentStartBodyView.php';
       require_once './view/basicView.php';
+  }
+
+  public function redirect($action) {
+      header("Location: index.php?c=Connexion&a=" . $action);
+  }
+
+  public function redirectWithAlert($action, $msg) {
+      addAlert($msg);
+      $this->redirect($action);
   }
 
 }

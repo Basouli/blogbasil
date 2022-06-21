@@ -30,9 +30,10 @@ enctype="multipart/form-data">
   <div id="droits" class="w-full <?php echo TITLE;?> flex flex-col items-center space-y-2 lg:space-y-0">
     <p>Droits</p>
     <select name="selectDroits" class="border-2 w-full p-1 text-black font-normal">
-      <option value="1">utilisateur</option>
-      <option value="42">moderateur</option>
-      <option value="1337">administrateur</option>
+      <?php foreach ($params['droits'] as $droit) {
+        echo '<option value="' . $droit->getId() . '">' . $droit->getNom() . '</option>';
+      }
+      ?>
     </select>
   </div>
 

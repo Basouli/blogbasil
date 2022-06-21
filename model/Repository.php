@@ -1,6 +1,8 @@
 <?php
 //
 require_once './include/myPdo.php';
+require_once './entity/Categorie.php';
+require_once './entity/Droit.php';
 //
 class Repository {
 
@@ -23,14 +25,14 @@ class Repository {
         $sql = "SELECT * FROM categories;";
         $request = $this->pdo->prepare($sql);
         $request->execute();
-        return $request->fetchAll(PDO::FETCH_ASSOC);
+        return $request->fetchAll(PDO::FETCH_CLASS, Categorie::class);
     }
 
     public function findAllDroits() {
         $sql = "SELECT * FROM droits;";
         $request = $this->pdo->prepare($sql);
         $request->execute();
-        return $request->fetchAll(PDO::FETCH_ASSOC);
+        return $request->fetchAll(PDO::FETCH_CLASS, Droit::class);
     }
 
     // UPDATE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// UPDATE

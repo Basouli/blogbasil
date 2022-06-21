@@ -14,7 +14,7 @@ enctype="multipart/form-data">
       <p>Catégories</p>
       <select name="selectCategorie" class="border-2 w-full p-1 text-black font-normal">
         <?php foreach ($params['categories'] as $c) {
-          echo '<option value="' . $c['id'] . '">' . $c['nom'] . '</option>';
+          echo '<option value="' . $c->getId() . '">' . $c->getNom() . '</option>';
         }
         ?>
       </select>

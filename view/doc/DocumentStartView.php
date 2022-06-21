@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr" class="w-full h-full min-h-full">
+<html lang="fr" class="w-full h-full">
 
 <head>
   <meta charset="utf-8">

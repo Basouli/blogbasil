@@ -139,18 +139,9 @@ class Connexion {
       }
   }
 
-  // LOGIN
-
-  public function sendLoginTest($params) {
-      if (isset($params['mail'])) {
-          if (isValidMailAdress($params['submitMail'])) {
-
-          } else {
-              $this->redirectWithAlert('identification', ERROR_INVALID_MAIL);
-          }
-      } else {
-          $this->redirectWithAlert('identification', ERROR_MISSING_PARAMETERS);
-      }
+  public function disconnect() {
+      disconnect();
+      $this->redirect('');
   }
 
 // REGISTER PART ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// REGISTER PART
@@ -189,60 +180,6 @@ class Connexion {
       addAlert($msg);
 
       header("Location: ?c=Connexion&a=identification");
-  }
-
-  public function mailConfirmation($params) {
-      if (isset($params['mail']) && isset($params['token'])) {
-
-          $tempUser = $this->model->findTempUserByMail($params['mail']);
-
-          if ($tempUser != null && $tempUser->getToken() == $params['token']) {
-
-              $loginExists = $this->model->loginExists($tempUser->getLogin());
-
-              if ($loginExists == '0') {
-                  $this->model->finaliseUserRegister($tempUser->getId());
-                  $this->model->deleteTempUser($tempUser->getId());
-                  $this->model->updateUserToken($tempUser->getId(), "");
-                  $contentToShow = '<div class="relative w-full flex flex-col items-center space-y-16 lg:space-y-2 p-12 lg:p-8 text-center text-4xl lg:text-sm">
-                      <div class="w-8 h-8">' . SVGALERT . '</div>
-                      <p>' . MAIL_CONFIRM_SUCCESS . '</p>
-                      <p>' . REDIRECT_MANUALY . '</p>
-                    </div>';
-
-                  getRedirectView(MAIL_CONFIRM, $contentToShow);
-
-              } else {
-                  $contentToShow = '<div class="relative w-full lg:w-1/4 flex flex-col items-center space-y-16 lg:space-y-2 p-12 lg:p-8 text-center text-4xl lg:text-sm">
-                      <div class="w-8 h-8">' . SVGALERT . '</div>
-                      <p>' . MAIL_CONFIRM_FAILURE . '</p>
-                      <br/><br>
-                      <p>' . ERROR_LOGIN_USED . '</p>
-                    </div>';
-
-                  $this->getBasicView('mailConfirmation', MAIL_CONFIRM, $contentToShow, array('contact', 'connexion'));
-              }
-
-          } else {
-              $contentToShow = '<div class="relative w-full lg:w-1/4 flex flex-col items-center space-y-16 lg:space-y-2 p-12 lg:p-8 text-center text-4xl lg:text-sm">
-                  <div class="w-8 h-8">' . SVGALERT . '</div>
-                  <p>' . MAIL_CONFIRM_FAILURE . '</p>
-                </div>';
-
-              $this->getBasicView('mailConfirmation', MAIL_CONFIRM, $contentToShow, array('contact', 'connexion'));
-          }
-      } else {
-          $this->redirectWithAlert('identification', ERROR_MISSING_PARAMETERS);
-      }
-  }
-
-  public function insertUser($login, $password, $mail) {
-      $insertresult = $this->model->insertUser($login, $password, $mail);
-      if ($insertresult) {
-          $this->redirectWithAlert('identification', CREATED_ACCOUNT);
-      } else {
-          $this->redirectWithAlert('register', ERROR_ACCOUNT_CREATING);
-      }
   }
 
   // REDIRECT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// REDIRECT

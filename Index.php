@@ -47,6 +47,10 @@ if (!isConnected()) {
             destroyCookies();
         }
     }
+} else {
+  if ($controllerName == 'Connexion') {
+      $controllerName = 'Home';
+  }
 }
 
 if (empty($controllerName) || !in_array($controllerName, $controllers)) {

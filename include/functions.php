@@ -21,7 +21,7 @@ function connectInvite() {
 
 //Détruit la session
 function disconnect() {
-    //session_unset()
+    session_unset();
     session_destroy();
     destroyAllSession();
 }
@@ -101,12 +101,14 @@ function setlang($lang) {
 
 // ______________________________________________________________________________________________________________________________________________
 
-function getContent($adress, $Pparmas) {
+function getContent($adress) {
 
     ob_start();
-      $model = new Repository();
+      $model = new HomeModel();
       $params['categories'] = $model->findAllCategories();
       $params['droits'] = $model->findAllDroits();
+      $params['articles'] = $model->findAllArticles();
+      $params['commentaires'] = $model->findAllCommentaires();
 
       include_once($adress);
       $content = ob_get_clean();
