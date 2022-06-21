@@ -1,31 +1,71 @@
 <?php
 //
-require_once './include/functions.php';
-require_once './controller/HomeController.php';
+$controllers = array('Connexion', 'Home', 'Manage');
+for ($i = 0; $i < count($controllers); $i++) {
+    $iController = './controller/' . $controllers[$i] . '.php';
+    require_once $iController;
+}
+require_once './model/ConnexionModel.php';
 require_once './include/config.php';
+require_once './include/functions.php';
 //
 $controllerName = filter_input(INPUT_GET, 'c', FILTER_SANITIZE_STRING);
 $a = filter_input(INPUT_GET, 'a', FILTER_SANITIZE_STRING);
 
 session_start();
 
-if ($controllerName != 'HomeController') {
-    $controllerName = 'HomeController';
+//Coupe la route ici s'il s'agit de webservice
+if ($controllerName == 'WebService') {
+    $c = new $controllerName;
+    $p = array(filterRequest());
+    echo call_user_func_array(array($c, $a), $p);
+    return;
 }
+
+connectInvite();
+
+if (!isConnected()) {
+    if (isset($_COOKIE['blog_idUser']) && isset($_COOKIE['blog_tokenUser'])) {
+        $model = new ConnexionModel;
+        $userCookie = $model->findUserById($_COOKIE['blog_idUser']);
+
+        if (!empty($userCookie)) {
+            if ($userCookie->getToken() == $_COOKIE['blog_tokenUser']) {
+                connect($userCookie);
+
+                $token = setConnexionCookies($userCookie);
+                $model->setToken(intval($userCookie->getId()), $token);
+
+                $controllerName = 'Home';
+                if (!isset($a)) {
+                    $a = 'run';
+                }
+            } else {
+                destroyCookies();
+            }
+        } else {
+            destroyCookies();
+        }
+    }
+}
+
+if (empty($controllerName) || !in_array($controllerName, $controllers)) {
+    $controllerName = 'Home';
+}
+
+if (!isset($a)) {
+    $a = "identification";
+}
+
+getLang();
+
 $c = new $controllerName;
-
-if (empty($a) || !in_array($a, array("home", "play", "simulation", "explain", "contact"))) {
-    $a = 'home';
-}
-
-//$p = array(array_filter($_REQUEST));
-$p = array(filterRequest());
-
+$p = array(filterRequest()); //Paramètres
 call_user_func_array(array($c, $a), $p);
 
 require_once './view/doc/DocumentEndView.php';
 
-//debugTrace();
+debugTrace($controllerName, $a);
 //cleanDatas();
 
 // FONCTIONS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// FONCTIONS
@@ -60,13 +100,11 @@ function filterRequest() {
     return $finalArray;
 }
 
-function debugTrace() {
-    echo '';
-    echo 'COOKIES :';
-    var_dump(getCookies());
-    echo '';
-    echo 'SESSIONS :';
-    var_dump(getVariablesSession());
+function debugTrace($c, $a) {
+    echo "<script>console.warn('controller : ');console.log('" . $c . "');</script>";
+    echo "<script>console.warn('action : ');console.log('" . $a . "');</script>";
+    echo "<script>console.warn('COOKIES : ');console.log(" . json_encode(getCookies()) . ");</script>";
+    echo "<script>console.warn('SESSIONS : ');console.log(" . json_encode(getVariablesSession()) . ");</script>";
 }
 
 function cleanDatas() {
