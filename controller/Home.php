@@ -19,15 +19,26 @@ class Home {
   }
 
   public function allArticles($params) {
-    $params['start'];
+    $categorie = "";
+    $start = 0;
+    if (isset($params['start'])) {
+      $start = $params['start'];
+    }
+    $filter = array();
+    if (isset($params['categorie'])) {
+      $categorie = $params['categorie'];
+      $filter = array('id_categorie' => $categorie);
+    }
+    $articles = $this->model->findAllArticlesWithFilter($filter);
 
-    $this->getBasicView('articles', 'Tous les Articles', './view/AllArticlesView.php', array());
+    $nombreDePages = (int)(count($articles) / 5);
+    $pageActuelle = ($start == 0) ? 0 : $start / 5;
 
     startHTML(array());
 
     $pageTitle = APPNAME . " - Tous les Articles";
     require_once './view/doc/DocumentStartBodyView.php';
-    include_once('./view/element/AllArticlesView.php');
+    require_once './view/AllArticlesView.php';
   }
 
   public function postCommentaire($params) {

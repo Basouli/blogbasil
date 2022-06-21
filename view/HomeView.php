@@ -8,14 +8,14 @@
 
       <?php
       for ($i = 0; $i < 3; $i++) {
-        if (isset($params['articles'][$i])) {
+        if (isset($articles[$i])) {
           include './view/element/article.php';
         }
       }
       ?>
 
       <?php
-      if (count($params['articles']) > 3) {
+      if (count($articles) > 3) {
         ?>
         <a href="?c=Home&a=allArticles" class="hover:cursor-pointer">voir tous les articles</a>
         <?php

@@ -16,11 +16,14 @@ class HomeModel extends Repository {
   }
 
   public function findAllArticlesWithFilter($filters) {
-      $wheres = " WHERE ";
-      foreach ($filters as $key => $value) {
-          $wheres .= $key . "='" . $value . "' AND ";
+      $wheres = "";
+      if (count($filters) > 0) {
+        $wheres = " WHERE ";
+        foreach ($filters as $key => $value) {
+            $wheres .= $key . "='" . $value . "' AND ";
+        }
+        $wheres = substr($wheres, 0, -5);
       }
-      $wheres = substr($wheres, 0, -5);
 
       $sql = "SELECT * FROM articles " . $wheres . ";";
       $request = $this->pdo->prepare($sql);

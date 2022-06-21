@@ -107,7 +107,7 @@ function getContent($adress) {
       $model = new HomeModel();
       $params['categories'] = $model->findAllCategories();
       $params['droits'] = $model->findAllDroits();
-      $params['articles'] = $model->findAllArticles();
+      $articles = $model->findAllArticles();
       $params['commentaires'] = $model->findAllCommentaires();
 
       include_once($adress);
