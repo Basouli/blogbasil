@@ -47,9 +47,9 @@
                         }
                       }
 
-                      echo '<td class="border-collapse border border-gray-800 bg-orange-400 hover:bg-orange-500 cursor-pointer"><a href="">Modifier</a></td>'; //Bouton de modification
+                      echo '<td class="relative border-collapse border border-gray-800 bg-orange-400 hover:bg-orange-500 cursor-pointer"><a class="absolute top-0 left-0 flex justify-center items-center w-full h-full" href="?c=Manage&a=modify&type=' . get_class($e) . '&id=' . $e->getId() . '"><p>Modifier</p></a></td>'; //Bouton de modification
 
-                      echo '<td class="border-collapse border border-gray-800 bg-red-500 hover:bg-red-600 cursor-pointer"><a href="">Supprimer</a></td>'; //bouton de suppression
+                      echo '<td class="relative border-collapse border border-gray-800 bg-red-500 hover:bg-red-600 cursor-pointer"><a class="absolute top-0 left-0 flex justify-center items-center w-full h-full" href="?c=Manage&a=delete&type=' . get_class($e) . '&id=' . $e->getId() . '"><p>Supprimer</p></a></td>'; //bouton de suppression
                     echo '</tr>';
                   }
                 } else {

@@ -81,7 +81,7 @@ class Home {
   }
 
   public function profil($params) {
-    $this->getBasicView('profil', 'Profil', './view/element/ProfilView.php', array());
+    $this->getBasicView('profil', 'Profil', './view/update/ProfilView.php', array());
   }
 
   public function updateProfil($params) {

@@ -43,15 +43,64 @@ class Manage {
 
   public function submitCreateArticle($params) {
     if (isset($params['submitArticle']) && isset($params['selectCategorie'])) {
-      //$_SESSION['user']->getId();
-      date_default_timezone_set('Europe/Paris');
-      $today = date("Y/m/d");
 
       $this->model->insertArticle($params['submitArticle'], $_SESSION['user']->getId(), $params['selectCategorie']);
       $this->redirectWithAlert('identification', 'Article ajouté avec succès.');
 
     } else {
       $this->redirectWithAlert('identification', 'Erreur, l\'article n\'a pas pu être créé.');
+    }
+  }
+
+  public function modify($params) {
+    if (isset($params['type']) && isset($params['id'])) {
+
+        $element = $this->model->get($params['type'], $params['id']);
+
+        if ($element != null) {
+            $this->getModifyView($element, $params['type'], $params['id']);
+        } else {
+            $this->redirectWithAlert('run', 'Erreur lors de la requete');
+        }
+
+    } else {
+      $this->redirectWithAlert('run', 'Erreur lors de la requete');
+    }
+  }
+
+  public function updateGeneric($params) {
+      switch ($params['type']) {
+        case "User":
+          $this->model->updateUser($params['submitlogin'], $params['submitpassword'], $params['submitemail'], $params['submitid_droits'], $params['submitid']);
+          break;
+
+        case "Article":
+          $this->model->updateArticle($params['submitarticle'], $params['submitid_utilisateur'], $params['submitid_categorie'], $params['submitdate'], $params['submitid']);
+          break;
+
+        case "Commentaire":
+          $this->model->updateCommentaire($params['submitcommentaire'], $params['submitid_article'], $params['submitid_utilisateur'], $params['submitdate'], $params['submitid']);
+          break;
+
+        case "Droit":
+          $this->model->updateDroit($params['submitnom'], $params['submitid']);
+          break;
+
+        case "Categorie":
+          $this->model->updateCategorie($params['submitnom'], $params['submitid']);
+          break;
+
+        default: break;
+      }
+      $this->redirectWithAlert('run', 'Modification réussie !');
+  }
+
+  public function delete($params) {
+    if (isset($params['type']) && isset($params['id'])) {
+      $this->model->deleteGeneric($params['type'], $params['id']);
+      $this->redirectWithAlert('run', 'Suppression réussie !');
+    } else {
+      $this->redirectWithAlert('run', 'Erreur lors de la requete');
     }
   }
 
@@ -65,6 +114,15 @@ class Manage {
       $pageTitle = APPNAME . " - " . $actionTitle;
       require_once './view/doc/DocumentStartBodyView.php';
       require_once './view/basicView.php';
+  }
+
+  function getModifyView($element, $type, $id) {
+      $a = "modify";
+      startHTML(array()); //"./script/element/ReloadScript.js"
+
+      $pageTitle = APPNAME . " - Modifier";
+      require_once './view/doc/DocumentStartBodyView.php';
+      require_once './view/update/basicModifyView.php';
   }
 
   // REDIRECT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// REDIRECT

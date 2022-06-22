@@ -1,12 +1,12 @@
 <div class="relative w-full px-8 py-2 flex flex-row justify-between items-center z-30 bg-gray-500 shadow-2xl">
 
   <!-- Retour accueil -->
-  <div class="flex flex-row items-center space-x-2 rounded bg-indigo-500 hover:bg-indigo-600 px-4 py-2 hover:cursor-pointer">
+  <a href="http://localhost/blogbasil/" class="flex flex-row items-center space-x-2 rounded bg-indigo-500 hover:bg-indigo-600 px-4 py-2 hover:cursor-pointer">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
       <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
     </svg>
-    <a href="http://localhost/blogbasil/" class="">Accueil</a>
-  </div>
+    <p class="">Accueil</p>
+  </a>
 
   <!-- types d"articles -->
   <?php
@@ -53,23 +53,23 @@
 
     <?php if ($_SESSION['user']->getDroits() == 42 || $_SESSION['user']->getDroits() == 1337) {
       //Creation d'Article
-      ?><a href="?c=Manage&a=createArticle" class="rounded hover:bg-indigo-500 px-4 py-2 whitespace-nowrap">Creer Article</a><?php
+      ?><a href="?c=Manage&a=createArticle" class="rounded bg-gray-400 bg-opacity-25 hover:bg-indigo-500 hover:bg-opacity-100 px-4 py-2 whitespace-nowrap">Creer Article</a><?php
     }
     if ($_SESSION['user']->getDroits() == 1337) {
       //Administration
-      ?><a href="?c=Manage&a=admin" class="rounded hover:bg-indigo-500 px-4 py-2">Administrer</a><?php
+      ?><a href="?c=Manage&a=admin" class="rounded bg-gray-400 bg-opacity-25 hover:bg-indigo-500 hover:bg-opacity-100 px-4 py-2">Administrer</a><?php
     }?>
 
     <?php if (isConnected()) {
       //Profil
-      ?><a href="?c=Home&a=profil" class="rounded hover:bg-indigo-500 px-4 py-2">Profil</a>
+      ?><a href="?c=Home&a=profil" class="rounded bg-gray-400 bg-opacity-25 hover:bg-indigo-500 hover:bg-opacity-100 px-4 py-2">Profil</a>
       <!--Deconnexion-->
-      <a href="?c=Home&a=deconnexion" class="rounded hover:bg-indigo-500 px-4 py-2">Deconnexion</a><?php
+      <a href="?c=Home&a=deconnexion" class="rounded bg-gray-400 bg-opacity-25 hover:bg-red-500 hover:bg-opacity-100 px-4 py-2">Deconnexion</a><?php
     } else {
       //Connexion
-      ?><a href="?c=Connexion&a=identification" class="rounded hover:bg-indigo-500 px-4 py-2">Connexion</a><?php
+      ?><a href="?c=Connexion&a=identification" class="rounded bg-gray-400 bg-opacity-25 hover:bg-indigo-500 hover:bg-opacity-100 px-4 py-2">Connexion</a><?php
       //Inscription
-      ?><a href="?c=Connexion&a=register" class="rounded hover:bg-indigo-500 px-4 py-2">Inscription</a><?php
+      ?><a href="?c=Connexion&a=register" class="rounded bg-gray-400 bg-opacity-25 hover:bg-indigo-500 hover:bg-opacity-100 px-4 py-2">Inscription</a><?php
     }?>
   </div>
 

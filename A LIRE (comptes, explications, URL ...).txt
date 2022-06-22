@@ -1,0 +1,32 @@
+Bienvenue sur le Blog de Basil COLLETTE, siteweb réalisé pour ma candidature à l'école "La Plateforme" de Marseille.
+
+Le siteweb est en ligne à l'adresse suivante :
+https://basilcollette.fr/blogbasil
+
+adresse du dépot GitHub (fichiers sources) :
+https://github.com/Basouli/blogbasil
+
+Base de Donnée :
+le fichier .sql d'import est trouvable dans le dossier racine du site, au nom de "".
+
+Comptes existants en Base de donnée:
+-- ADMINISTRATEUR ----------------
+pseudo:admin
+password:azer
+
+-- MODERATEUR --------------------
+pseudo:moderateur13
+password:azerty
+
+-- UTILISATEUR -------------------
+pseudo:utilisateur1
+password:azerty
+
+Mon Portfolio :
+https://basilcollette.fr/portfolio/
+
+Mon LinkedIn :
+https://www.linkedin.com/in/basil-collette-815283171/
+
+Mon adresse mail :
+basil.collette@outlook.fr
