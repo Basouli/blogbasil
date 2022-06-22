@@ -7,7 +7,7 @@ adresse du dépot GitHub (fichiers sources) :
 https://github.com/Basouli/blogbasil
 
 Base de Donnée :
-le fichier .sql d'import est trouvable dans le dossier racine du site, au nom de "".
+le fichier .sql d'import est trouvable dans le dossier racine du site, au nom de "blog.sql".
 
 Comptes existants en Base de donnée:
 -- ADMINISTRATEUR ----------------
