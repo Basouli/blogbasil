@@ -16,7 +16,18 @@ class Manage {
 
   public function admin($params) {
     if ($_SESSION['user']->getDroits() == "1337") {
-        $this->getBasicView('identification', CONNECT, './view/element/CreateArticle.php', array());
+      $a = "admin";
+      $elements = null;
+      if (isset($params['elements'])) {
+        $elements = $this->model->getAll($params['elements']);
+      }
+
+      startHTML(array());
+
+      $pageTitle = APPNAME . " - Administration";
+      require_once './view/doc/DocumentStartBodyView.php';
+      require_once './view/AdministrationView.php';
+
     } else {
       $this->redirectWithAlert('identification', 'Vous devez être connecté avec un compte administrateur pour accéder à cette page.');
     }
