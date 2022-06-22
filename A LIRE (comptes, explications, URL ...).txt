@@ -8,6 +8,7 @@ https://github.com/Basouli/blogbasil
 
 Base de Donnée :
 le fichier .sql d'import est trouvable dans le dossier racine du site, au nom de "blog.sql".
+les informations de connexion à la base sont modifiables dans le fichier "./include/variables/devPdoVariables.php".
 
 Comptes existants en Base de donnée:
 -- ADMINISTRATEUR ----------------
