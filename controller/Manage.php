@@ -47,9 +47,8 @@ class Manage {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   function getBasicView($action, $actionTitle, $contentToShow, $navButtons) {
-
       $content = (substr($contentToShow, -4) == ".php") ? getContent($contentToShow) : $contentToShow;
-
+      $a = $action;
       startHTML(array("./script/utils/ajax.js", "./script/element/LangScript.js")); //"./script/element/ReloadScript.js"
 
       $pageTitle = APPNAME . " - " . $actionTitle;

@@ -9,6 +9,7 @@ class Article implements JsonSerializable {
     private $article;
     private $id_utilisateur;
     private $id_categorie;
+    private $categorieNom;
     private $date;
     private $commentaires;
 
@@ -26,6 +27,7 @@ class Article implements JsonSerializable {
         $model = new HomeModel();
         $filters = array('id_article' => $this->id);
         $this->commentaires = $model->findAllCommentairesWithFilter($filters);
+        $this->categorieNom = $model->findCategorie($this->id_categorie)->getNom();
     }
 
     public function getId() {
@@ -42,6 +44,10 @@ class Article implements JsonSerializable {
 
     public function getIdCategorie() {
         return $this->id_categorie;
+    }
+
+    public function getNomCategorie() {
+        return $this->categorieNom;
     }
 
     public function getDate() {

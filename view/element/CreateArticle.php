@@ -23,7 +23,7 @@ enctype="multipart/form-data">
 
   <!-- ACTION BTN -->
   <div class="w-full flex flex-row justify-center">
-    <input name="submitbtn" type=submit class="py-6 px-10 lg:py-2 lg:px-6 text-center bg-indigo-600 rounded-2xl lg:rounded-xl cursor-pointer" value="Créer" />
+    <input name="submitbtn" type=submit class="py-6 px-10 lg:py-2 lg:px-6 text-center bg-indigo-500 hover:bg-indigo-600 rounded-2xl lg:rounded-xl cursor-pointer" value="Créer" />
   </div>
 
 </form>

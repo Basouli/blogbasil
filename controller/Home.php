@@ -18,21 +18,42 @@ class Home {
     $this->getBasicView('home', 'Accueil', './view/HomeView.php', array());
   }
 
+  public function detailsArticle($params) {
+    $a = "detailsArticle";
+    if (isset($params['id'])) {
+      $selectedArticle = $this->model->findOneArticles($params['id']);
+
+      startHTML(array());
+
+      $pageTitle = APPNAME . " - Détails Article";
+      require_once './view/doc/DocumentStartBodyView.php';
+      require_once './view/DetailArticleView.php';
+    } else {
+      $this->redirect('run');
+    }
+  }
+
   public function allArticles($params) {
-    $categorie = "";
+    $a = "allArticles";
+    $params['categories'] = $this->model->findAllCategories();
+
     $start = 0;
     if (isset($params['start'])) {
       $start = $params['start'];
     }
+
     $filter = array();
-    if (isset($params['categorie'])) {
-      $categorie = $params['categorie'];
+    $categorie = (!isset($params['categorie']) || $params['categorie'] == "null") ? "null" : $params['categorie'];
+    if ($categorie != "null") {
       $filter = array('id_categorie' => $categorie);
     }
     $articles = $this->model->findAllArticlesWithFilter($filter);
 
-    $nombreDePages = (int)(count($articles) / 5);
-    $pageActuelle = ($start == 0) ? 0 : $start / 5;
+    $nombreDePages = ceil((count($articles) / 5));
+
+    $pageActuelle = ($start == 0) ? 1 : (int)($start / 5)+1;
+
+    $articles = array_slice($articles, $start, 5);
 
     startHTML(array());
 
@@ -57,6 +78,19 @@ class Home {
       $pageTitle = APPNAME . " - " . ACCOUNT;
       require_once './view/doc/DocumentStartBodyView.php';
       require_once './view/ManageAccountView.php';
+  }
+
+  public function profil($params) {
+    $this->getBasicView('profil', 'Profil', './view/element/ProfilView.php', array());
+  }
+
+  public function updateProfil($params) {
+    if (isset($params['submitLogin']) && isset($params['submitMail']) && isset($params['selectDroits'])) {
+      $this->model->updateUser($params['submitLogin'], $params['submitPassword'], $params['submitMail'], $params['selectDroits'], $_SESSION['user']->getId());
+      $this->redirectWithAlert('run', 'Profil mit à jour !');
+    } else {
+      $this->redirectWithAlert('run', 'Error lors de la mise à jour du profil. Profil inchangé');
+    }
   }
 
   public function deconnexion($params) {

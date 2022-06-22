@@ -28,6 +28,14 @@ class Repository {
         return $request->fetchAll(PDO::FETCH_CLASS, Categorie::class);
     }
 
+    public function findCategorie($id_categorie) {
+        $sql = "SELECT * FROM categories WHERE id=:IdCategorie;";
+        $request = $this->pdo->prepare($sql);
+        $request->bindValue(':IdCategorie', $id_categorie, PDO::PARAM_INT);
+        $request->execute();
+        return $request->fetchObject(Categorie::class);
+    }
+
     public function findAllDroits() {
         $sql = "SELECT * FROM droits;";
         $request = $this->pdo->prepare($sql);

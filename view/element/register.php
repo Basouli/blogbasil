@@ -40,9 +40,9 @@ enctype="multipart/form-data">
   <!-- BUTTONS -->
   <div class="w-full flex flex-row justify-between lg:pt-4">
     <!-- CANCEL BTN -->
-    <a href="index.php?c=Connexion&a=identification" class="text-center flex flex-col justify-center items-center bg-gray-500 rounded-2xl lg:rounded-xl py-6 px-10 lg:py-2 lg:px-6 cursor-pointer"><?php echo CANCEL; ?></a>
+    <a href="index.php?c=Connexion&a=identification" class="text-center flex flex-col justify-center items-center bg-gray-500 hover:bg-indigo-600 rounded-2xl lg:rounded-xl py-6 px-10 lg:py-2 lg:px-6 cursor-pointer"><?php echo CANCEL; ?></a>
     <!-- CONFIRM REGISTER BTN -->
-    <input name="submitbtn" type=submit class="py-6 px-10 lg:py-2 lg:px-6 text-center bg-indigo-600 rounded-2xl lg:rounded-xl cursor-pointer" value="<?php echo REGISTER; ?>" />
+    <input name="submitbtn" type=submit class="py-6 px-10 lg:py-2 lg:px-6 text-center bg-indigo-500 hover:bg-indigo-600 rounded-2xl lg:rounded-xl cursor-pointer" value="<?php echo REGISTER; ?>" />
   </div>
 
 </form>

@@ -9,7 +9,16 @@
       <?php
       for ($i = 0; $i < 3; $i++) {
         if (isset($articles[$i])) {
-          include './view/element/article.php';
+          ?>
+          <a href="?c=Home&a=detailsArticle&id=<?php echo $articles[$i]->getId() ?>" class="w-1/2 flex flex-col space-y-4 rounded-xl bg-gray-500 p-4 hover:cursor-pointer shadow-xl">
+            <div class="w-full flex flex-row justify-between text-indigo-300 text-3xl lg:text-xs">
+              <p><?php echo $articles[$i]->getNomCategorie(); ?></p>
+              <p><?php echo $articles[$i]->getDate(); ?></p>
+            </div>
+
+            <p class=""><?php echo $articles[$i]->getArticle(); ?></p>
+          </a>
+          <?php
         }
       }
       ?>
@@ -17,7 +26,7 @@
       <?php
       if (count($articles) > 3) {
         ?>
-        <a href="?c=Home&a=allArticles" class="hover:cursor-pointer">voir tous les articles</a>
+        <a href="?c=Home&a=allArticles" class="hover:cursor-pointer rounded px-3 py-1 hover:bg-indigo-600">voir tous les articles</a>
         <?php
       }
       ?>

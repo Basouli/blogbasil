@@ -24,14 +24,6 @@ class Connexion {
 
                   connect($user);
 
-                  if (array_key_exists('keepConnect', $params)) {
-                      $token = setConnexionCookies($user);
-                      $this->model->updateUserToken(intval($user->getId()), $token);
-
-                  } else {
-                      //
-                  }
-
                   header("Location: ?c=Home&a=run");
 
               } else {//Password not Ok
@@ -47,107 +39,16 @@ class Connexion {
 
   }
 
-// CONNECT HELPER //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// CONNECT HELPER
-
-  public function cannotConnect($params) {
-      $this->getBasicView('cannotConnect', CANNOTCONNECTTITLE, './view/element/CannotConnectView.php', array('contact', 'connexion'));
-  }
-
-  public function resendConfirmationMail($params) {
-      $_SESSION['basicview-actionUrl'] = "?c=Connexion&a=resendConfirmationMailResend";
-      $_SESSION['basicview-msg'] = CONFIRMATION_MAIL_INDICATOR_TXT;
-      $this->getBasicView('resendConfirmationMail', RESEND_CONFIRMATION_MAIL, './view/element/inputMailView.php', array('rgpd', 'connexion'));
-  }
-
-  public function changePassword($params) {
-      $_SESSION['basicview-actionUrl'] = "?c=Connexion&a=changePasswordSend";
-      $_SESSION['basicview-msg'] = CHANGE_PASSWORD_INDICATOR_TXT;
-      $this->getBasicView('changePassword', CHANGE_PASSWORD, './view/element/inputMailView.php', array('rgpd', 'connexion'));
-  }
-
-  public function sendLogin($params) {
-      $_SESSION['basicview-actionUrl'] = "?c=Connexion&a=sendLogintest";
-      $_SESSION['basicview-msg'] = SEND_LOGIN_INDICATOR_TXT;
-      $this->getBasicView('sendLogin', SEND_LOGIN, './view/element/inputMailView.php', array('rgpd', 'connexion'));
-  }
-
-  // PASSWORD
-
-  public function changePasswordSend($params) {
-      if (isset($params['submitMail'])) {
-          if (isValidMailAdress($params['submitMail'])) {
-              $user = $this->model->findUserByMail($params['submitMail']);
-
-              if ($user != null) {
-                  $token = random_int(100000, 999999);
-
-                  $this->model->updateUserToken($user->getId(), $token);
-
-                  $mailParameters = array("MAIL" => $params['submitMail'],
-                                          "TOKEN" => $token,
-                                          "MSG" => CHANGEPASSWORD_MAIL_MSG,
-                                          "VALID-CHANGE-PASSWORD-BTN" => CHANGEPASSWORD_MAIL_BTN
-                                        );
-                  sendTemplateMail($params['submitMail'], CHANGE_PASSWORD, './view/element/mail/changePasswordMailHTML.php', $mailParameters);
-              }
-
-              $this->redirectWithAlert('identification', CHANGEPASSWORD_MAIL_SENT);
-          } else {
-              $this->redirectWithAlert('identification', ERROR_INVALID_MAIL);
-          }
-      } else {
-          $this->redirectWithAlert('identification', ERROR_MISSING_PARAMETERS);
-      }
-  }
-
-  public function changePasswordView($params) {
-      if (isset($params['mail']) && isset($params['token'])) {
-
-          $user = $this->model->findTempUserByMail($params['mail']);
-          if ($user == null) {
-              $user = $this->model->findUserByMail($params['mail']);
-          }
-          if ($user != null && $user->getToken() == $params['token']) {
-
-              $_SESSION['changePassword-userId'] = $user->getId();
-              $this->getBasicView('changePassword', CHANGE_PASSWORD, './view/element/changePasswordView.php', array('rgpd', 'connexion'));
-
-          } else {
-              $this->redirectWithAlert('identification', ERROR_INVALID_LINK);
-          }
-      } else {
-          $this->redirectWithAlert('identification', ERROR_MISSING_PARAMETERS);
-      }
-  }
-
-  public function changePasswordTest($params) {
-      if (isset($params['submitPassword']) && isset($params['submitPasswordBis']) && isset($_SESSION['changePassword-userId'])) {
-          if ($params['submitPassword'] == $params['submitPasswordBis']) {
-              $user = $this->model->findUserById($_SESSION['changePassword-userId']);
-              unset($_SESSION['changePassword-userId']);
-              $password_hache = password_hash($params['submitPassword'], PASSWORD_DEFAULT);
-              $this->model->updateUserPassword($user->getId(), $password_hache);
-              $now = new DateTime();
-              $now->format('Y\-m\-d\ h:i:s');
-              sendTemplateMail($user->getMail(), CHANGE_PASSWORD, './view/element/mail/confirmationUpdatedPassword.php', array("MSG" => UPDATED_PASSWORD_MAIL_MSG, "DATE" => $now));
-              $this->redirectWithAlert('identification', CONFIRMATION_UPDATED_PASSWORD);
-          } else {
-              $this->redirectWithAlert('register', ERROR_PWD_UNSAME);
-          }
-      } else {
-          $this->redirectWithAlert('register', ERROR_MISSING_PARAMETERS);
-      }
-  }
-
-  public function disconnect() {
-      disconnect();
-      $this->redirect('');
-  }
-
 // REGISTER PART ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// REGISTER PART
 
   public function register($params) {
       $this->getBasicView('identification', 'Inscription', './view/element/register.php', array());
+  }
+
+  // REDIRECT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// REDIRECT
+
+  public function redirect($action) {
+      header("Location: index.php?c=Connexion&a=" . $action);
   }
 
   public function tempRegister($params) {
@@ -166,26 +67,6 @@ class Connexion {
           $this->redirectWithAlert('register', ERROR_MISSING_PARAMETERS);
       }
 
-  }
-
-  public function resendConfirmationMailResend($params) {
-      if (isset($params['submitMail'])) {
-          $tempUser = $this->model->findTempUserByMail($params['submitMail']);
-          if ($tempUser != null) {
-              sendConfirmationMail($params['submitMail'], $tempUser->getToken());
-          }
-      }
-
-      $msg = MAIL_RESEND;
-      addAlert($msg);
-
-      header("Location: ?c=Connexion&a=identification");
-  }
-
-  // REDIRECT //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// REDIRECT
-
-  public function redirect($action) {
-      header("Location: index.php?c=Connexion&a=" . $action);
   }
 
   public function redirectWithAlert($action, $msg) {
